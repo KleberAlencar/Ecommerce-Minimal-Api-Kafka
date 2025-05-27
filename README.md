@@ -9,4 +9,5 @@ In this project, I will create a sample e-commerce app.
 2. Microservice;
 3. Minimal APIs;
 4. Kafka;
-5. Product and Order Contexts.
+5. Aspire - Host;
+6. Product and Order Contexts.
