@@ -1,0 +1,54 @@
+﻿@page "/cart/{ProductId:int}"
+@using Ecommerce.Domain.OrderContext.Entities
+@using Ecommerce.Domain.ProductContext.Entities
+@inject HttpClient HttpClient
+@inject IJSRuntime JsRuntime
+@rendermode InteractiveServer
+<h3>Cart</h3>
+
+<form id="orderForm">
+    <div class="form-group mb-4">
+        <label>
+            Customer Name
+            <input type="text" id="txtCustomerName" aria-label="CustomerName" class="form-control" placeholder="Enter customer name" @bind="_order.CustomerName" />
+        </label>
+    </div>
+    <div class="form-group mb-4">
+        <label>
+            Product Name
+            <input type="text" id="txtProductName" aria-label="ProductName" disabled="disabled" class="form-control" placeholder="Enter product name" @bind="_product!.Name" />
+        </label>
+    </div>
+    <div class="form-group mb-4">
+        <label>
+            Quantity
+            <input type="text" id="txtQuantity" aria-label="Quantity" class="form-control" placeholder="Enter quantity" @bind="_order.Quantity" />
+        </label>
+    </div>
+    <button type="button" class="btn btn-primary" @onclick="Createorder">Create Order</button>
+</form>
+
+@code {
+    [Parameter]
+    public int ProductId { get; set; }
+
+    private Order _order = new();
+    private Product? _product = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _order.ProductId = ProductId;
+        _product = await HttpClient.GetFromJsonAsync<Product>($"http://localhost:5281/v1/products/{ProductId}");
+        await base.OnInitializedAsync();
+    }
+    
+    public async Task Createorder()
+    {
+        Console.WriteLine(_order);
+        var result = await HttpClient.PostAsJsonAsync<Order>("http://localhost:5113/v1/orders", _order);
+        if (result.IsSuccessStatusCode)
+        {
+            await JsRuntime.InvokeVoidAsync("alert", "Success Order created");
+        }
+    }
+}

@@ -1,6 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Ecommerce.Domain.OrderContext;
+﻿using System.Text.Json.Serialization;
+using Confluent.Kafka;
+using Microsoft.EntityFrameworkCore;
 using Ecommerce.OrderService.Api.Data;
+using Ecommerce.Domain.OrderContext.Entities;
+using Ecommerce.OrderService.Api.Kafka;
+using Newtonsoft.Json;
 
 namespace Ecommerce.OrderService.Api.Endpoints;
 
@@ -19,10 +23,24 @@ public static class OrderEndpoint
             return Results.Ok(order);
         });
 
-        group.MapPost("/", async (OrderDbContext context, Order order) =>
+        group.MapPost("/", async (OrderDbContext context, Order order, IProducer producer) =>
         {
             context.Orders.Add(order);
             await context.SaveChangesAsync();
+
+            var orderMessage = new OrderMessage
+            {
+                OrderId = order.Id,
+                ProductId = order.ProductId,
+                Quantity = order.Quantity
+            };
+            
+            await producer.ProduceAsync("order-topic", new Message<string, string>()
+            {
+                Key = order.Id.ToString(), 
+                Value = JsonConvert.SerializeObject(orderMessage)
+            });
+            
             return Results.Created($"/orders/{order.Id}", order);       
         });
 

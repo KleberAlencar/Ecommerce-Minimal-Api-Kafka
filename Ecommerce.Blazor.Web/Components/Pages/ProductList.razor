@@ -1,18 +1,18 @@
 ﻿@page "/products"
-@using Ecommerce.Domain.ProductContext
-@inject HttpClient Client
-<h3>ProductList</h3>
+@using Ecommerce.Domain.ProductContext.Entities
+@inject HttpClient HttpClient
+<h3>Product List</h3>
 
 <div class="row">
-    @foreach (var product in Products)
+    @foreach (var productItem in _products)
     {
         <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h5 class="card-title">@product.Name</h5>
-                    <p class="card-text">Price: @product.Price</p>
-                    <p class="card-text">Quantity: @product.Quantity</p>
-                    <a href="#" class="btn btn-primary">Buy</a>
+                    <h5 class="card-title">@productItem.Name</h5>
+                    <p class="card-text">Price: @productItem.Price</p>
+                    <p class="card-text">Quantity: @productItem.Quantity</p>
+                    <a href="/cart/@productItem.Id" class="btn btn-primary">Buy</a>
                 </div>
             </div>
         </div>
@@ -20,11 +20,11 @@
 </div>
 
 @code {
-    private List<Product>? Products = new List<Product>();
+    private List<Product>? _products = [];
 
     protected override async Task OnInitializedAsync()
     {
-        Products = await Client.GetFromJsonAsync<List<Product>>("http://localhost:5281/v1/products");
+        _products = await HttpClient.GetFromJsonAsync<List<Product>>("http://localhost:5281/v1/products");
         await base.OnInitializedAsync();
     }
 }

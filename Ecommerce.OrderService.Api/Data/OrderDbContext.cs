@@ -1,5 +1,5 @@
-﻿using Ecommerce.Domain.OrderContext;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using Ecommerce.Domain.OrderContext.Entities;
 
 namespace Ecommerce.OrderService.Api.Data;
 

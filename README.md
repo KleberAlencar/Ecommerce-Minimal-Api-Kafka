@@ -10,4 +10,5 @@ In this project, I will create a sample e-commerce app.
 3. Minimal APIs;
 4. Kafka;
 5. Aspire - Host;
-6. Product and Order Contexts.
+6. Entity Framework Core (EF Core);
+7. Product and Order Contexts.

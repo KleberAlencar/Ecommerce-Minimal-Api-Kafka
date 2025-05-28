@@ -1,0 +1,36 @@
+﻿@page "/orders"
+@using Ecommerce.Domain.OrderContext.Entities
+@inject HttpClient HttpClient
+<h3>Order List</h3>
+
+<table class="table table-striped">
+    <thead>
+    <tr>
+        <th scope="col">Customer Name</th>
+        <th scope="col">Product Id</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Order Date</th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var orderItem in _orders)
+    {
+        <tr>
+            <th scope="row">@orderItem.CustomerName</th>
+            <td>@orderItem.ProductId</td>
+            <td>@orderItem.Quantity</td>
+            <td>@orderItem.OrderDate</td>
+        </tr>
+    }
+    </tbody>
+</table>
+
+@code {
+    private List<Order>? _orders = [];
+
+    protected override async Task OnInitializedAsync()
+    {
+        _orders = await HttpClient.GetFromJsonAsync<List<Order>>("http://localhost:5113/v1/orders");
+        await base.OnInitializedAsync();
+    }
+}

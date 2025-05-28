@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ecommerce.Domain.ProductContext;
 using Ecommerce.ProductService.Api.Data;
+using Ecommerce.Domain.ProductContext.Entities;
 
 namespace Ecommerce.ProductService.Api.Endpoints;
 

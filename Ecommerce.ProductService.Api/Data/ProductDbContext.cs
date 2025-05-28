@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using Ecommerce.Domain.ProductContext;
+using Ecommerce.Domain.ProductContext.Entities;
 
 namespace Ecommerce.ProductService.Api.Data;
 

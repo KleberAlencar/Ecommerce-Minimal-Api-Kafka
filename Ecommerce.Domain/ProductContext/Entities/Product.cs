@@ -1,6 +1,6 @@
-﻿namespace Ecommerce.Domain.ProductContext;
+﻿namespace Ecommerce.Domain.ProductContext.Entities;
 
-public class Product
+public record Product
 {
     public int Id { get; set; }
 
